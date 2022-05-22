@@ -11,8 +11,6 @@ def prepare_data(df: pd.DataFrame, prediction_days: int) -> pd.DataFrame:
     df = df.iloc[::-1]
     df.reset_index(inplace=True, drop=True)
     df = pd.DataFrame(df['Close'])
-    df["Close"] = df["Close"].str.replace(',', '')
-    df['Close'] = df['Close'].astype(float)
     df['Prediction'] = df[['Close']].shift(-prediction_days)
     return df
 
