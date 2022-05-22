@@ -1,3 +1,6 @@
+## Advise
+Do not use this with investor purposes, this can be used only with student proposals.
+
 # Price predictor
 
 The script is responsible for prediction of cryptocurrency price values. When the script is running, a DataFrame object is prepared, of which the price is also a set `X`, and a price column is created as a set `y` which is an offset of the column from the set `X` by the specified number of days (by default 30 days). 
