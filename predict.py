@@ -3,18 +3,18 @@ import numpy as np
 from sklearn.svm import SVR
 
 
-def prepare_data(namefile, prediction_days):
+def prepare_data(namefile: str, prediction_days: int) -> pd.DataFrame:
     df = pd.read_csv(namefile)
     df = df.iloc[::-1]
-    df.reset_index(inplace=True, drop = True)
+    df.reset_index(inplace=True, drop=True)
     df = pd.DataFrame(df['Close'])
-    df["Close"]=df["Close"].str.replace(',','')
+    df["Close"] = df["Close"].str.replace(',', '')
     df['Close'] = df['Close'].astype(float)
     df['Prediction'] = df[['Close']].shift(-prediction_days)
     return df
 
 
-def get_X_and_y(df, prediction_days):
+def get_X_and_y(df: pd.DataFrame, prediction_days: int) -> (np.array, np.array):
     X = np.array(df.drop(['Prediction'], axis=1))
     X = X[:len(df) - prediction_days]
 
@@ -23,25 +23,25 @@ def get_X_and_y(df, prediction_days):
     return X, y
 
 
-def get_X_predict(df, prediction_days):
+def get_X_predict(df: pd.DataFrame, prediction_days: int) -> np.array:
     X_predict = np.array(df.drop(['Prediction'], axis=1))[-prediction_days:]
     return X_predict
 
 
-def get_fitted_model(X, y):
-    model = SVR(kernel='rbf', C=1e3, gamma=0.00001) #Create the model
-    model.fit(X, y) #Train the model
+def get_fitted_model(X: np.array, y: np.array) -> SVR:
+    model = SVR(kernel='rbf', C=1e3, gamma=0.00001)  # Create the model
+    model.fit(X, y)  # Train the model
     return model
 
 
-def get_predict(X_predict, model):
+def get_predict(X_predict: np.array, model: SVR) -> np.array:
     predict = model.predict(X_predict)
     return predict
 
 
 if __name__ == "__main__":
     prediction_days = 30
-    df = prepare_data('name.csv', prediction_days)
+    df = prepare_data('test2.csv', prediction_days)
     X, y = get_X_and_y(df, prediction_days)
     X_predict = get_X_predict(df, prediction_days)
     model = get_fitted_model(X, y)
