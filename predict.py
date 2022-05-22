@@ -8,7 +8,6 @@ def load_data(namefile: str) -> pd.DataFrame:
 
 
 def prepare_data(df: pd.DataFrame, prediction_days: int) -> pd.DataFrame:
-    df = df.iloc[::-1]
     df.reset_index(inplace=True, drop=True)
     df = pd.DataFrame(df['Close'])
     df['Prediction'] = df[['Close']].shift(-prediction_days)
